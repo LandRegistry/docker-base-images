@@ -34,8 +34,16 @@ RUN echo "Creating log directory..." \
   && /usr/lib/squid/security_file_certgen -c -s ${SQUID_SSLDB_DIR} -M 4MB \
   && echo "Setting SSL cert directory permissions..." \
   && chmod -R 755 ${SQUID_SSLDB_DIR} \
-  && chown -R ${SQUID_USER}:${SQUID_USER} ${SQUID_SSLDB_DIR}
+  && chown -R ${SQUID_USER}:${SQUID_USER} ${SQUID_SSLDB_DIR} \
+  && echo "Adding tini..." \
+  && curl -L https://github.com/krallin/tini/releases/download/v0.18.0/tini > /tini \
+  && chmod +x /tini
 
 EXPOSE 3128/tcp
 VOLUME /var/spool/squid
-ENTRYPOINT ["squid", "-f", "/etc/squid/squid.conf", "-NYCd", "1"]
+
+# Set Tini entrypoint
+ENTRYPOINT ["/tini", "-e", "143", "--"]
+
+# Set squid CMD
+CMD ["squid", "-f", "/etc/squid/squid.conf", "-NYCd", "1"]
