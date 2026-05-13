@@ -21,13 +21,13 @@ WORKDIR /tmp
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get -qq install -y --no-install-recommends \
-      ca-certificates \
-      g++ \
-      make \
-      libcrypt-dev \
-      libssl-dev \
-      pkg-config \
-      wget \
+      ca-certificates=20260223 \
+      g++=4:15.2.0-5ubuntu1 \
+      make=4.4.1-3 \
+      libcrypt-dev=1:4.5.1-1 \
+      libssl-dev=3.5.5-1ubuntu3 \
+      pkg-config=2.5.1-4 \
+      wget=1.25.0-2ubuntu4 \
  && rm -rf /var/lib/apt/lists/* \
  && update-ca-certificates -f \
  && wget -q https://github.com/squid-cache/squid/releases/download/${SQUID_RELEASE}/${SQUID_VERSION}.tar.gz \
